@@ -1,0 +1,135 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guard-worktree-path.py"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guard-delete-outside.py"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guard-protected-push.py"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|Read|Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guard-secrets.py"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|MultiEdit|Write|NotebookEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guard-key-literals.py"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|MultiEdit|Write|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guard-key-literals.py"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && python3 .claude/hooks/cleanup-wt.py --auto --fetch 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(gh\u0001issue\u0001view:*)",
+      "Bash(gh\u0001issue\u0001edit:*)",
+      "Bash(gh\u0001issue\u0001comment:*)",
+      "Bash(gh\u0001pr\u0001view:*)",
+      "Bash(gh\u0001pr\u0001diff:*)",
+      "Bash(gh\u0001pr\u0001checks:*)",
+      "Bash(gh\u0001pr\u0001comment:*)",
+      "Bash(gh\u0001pr\u0001create:*)",
+      "Bash(gh\u0001pr\u0001ready:*)",
+      "Bash(gh\u0001project\u0001item-edit:*)",
+      "Bash(gh\u0001project\u0001item-list:*)",
+      "Bash(gh\u0001api:*)",
+      "Bash(git\u0001worktree:*)",
+      "Bash(.claude/bin/super-board-card.sh:*)",
+      "Bash(git\u0001checkout:*)",
+      "Bash(git\u0001add:*)",
+      "Bash(git\u0001commit:*)",
+      "Bash(git\u0001push:*)",
+      "Bash(git\u0001pull:*)",
+      "Bash(git\u0001fetch:*)",
+      "Bash(git\u0001blame:*)",
+      "Bash(mkdir:*)",
+      "Bash(pgrep:*)",
+      "Bash(node\u0001--check:*)",
+      "Bash(bash\u0001.claude/bin/super-board-wave-plan.sh:*)",
+      "Bash(bash\u0001.claude/bin/super-board-preflight.sh:*)",
+      "Bash(bash\u0001.claude/bin/super-board-usage.sh:*)",
+      "Bash(bash\u0001.claude/bin/super-board-throttle.sh:*)",
+      "Bash(bash\u0001.claude/bin/super-board-codex-lane.sh:*)",
+      "Bash(bash\u0001.claude/bin/super-board-codex-wave.sh:*)",
+      "Bash(bash\u0001.claude/bin/super-board-host.sh:*)",
+      "Bash(bash\u0001.claude/bin/super-board-pr-body.sh:*)",
+      "Bash(gh\u0001pr\u0001edit:*)",
+      "Bash(bash\u0001.claude/bin/super-board-env-check.sh:*)",
+      "Bash(bash\u0001.claude/bin/super-board-merge-gate.sh:*)",
+      "Bash(gh\u0001pr\u0001merge:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh issue edit:*)",
+      "Bash(gh issue comment:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh pr checks:*)",
+      "Bash(gh pr comment:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr ready:*)",
+      "Bash(gh project item-edit:*)",
+      "Bash(gh project item-list:*)",
+      "Bash(gh api:*)",
+      "Bash(git worktree:*)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git pull:*)",
+      "Bash(git fetch:*)",
+      "Bash(git blame:*)",
+      "Bash(node --check:*)",
+      "Bash(bash .claude/bin/super-board-wave-plan.sh:*)",
+      "Bash(bash .claude/bin/super-board-preflight.sh:*)",
+      "Bash(bash .claude/bin/super-board-usage.sh:*)",
+      "Bash(bash .claude/bin/super-board-throttle.sh:*)",
+      "Bash(bash .claude/bin/super-board-codex-lane.sh:*)",
+      "Bash(bash .claude/bin/super-board-codex-wave.sh:*)",
+      "Bash(bash .claude/bin/super-board-host.sh:*)",
+      "Bash(bash .claude/bin/super-board-pr-body.sh:*)",
+      "Bash(gh pr edit:*)",
+      "Bash(bash .claude/bin/super-board-env-check.sh:*)",
+      "Bash(bash .claude/bin/super-board-merge-gate.sh:*)",
+      "Bash(gh pr merge:*)"
+    ]
+  }
+}
