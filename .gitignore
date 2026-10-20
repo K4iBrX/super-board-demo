@@ -6,3 +6,6 @@
 .claude/super-board/migrations/
 .claude/super-board/upgrade.json
 .claude/settings.json.bak-*
+.venv/
+__pycache__/
+.pytest_cache/
