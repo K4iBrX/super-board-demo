@@ -1,0 +1,20 @@
+=== dispatch lane=build issue=#1 at 2026-10-20T22:45:53Z ===
+prompt: Run super-build on issue #1 for super-board run. Read .claude/skills/super-board/references/run.md → Builder lifecycle. Config: .claude/super-board/configs/super-board-demo.json.
+
+Warning: MCP server blocked by enterprise policy: cmux-cua
+Ignoring 69 permissions.allow entries from .claude/settings.json: this workspace has not been trusted. Run Claude Code interactively here once and accept the trust dialog, or set projects["/Users/kai/Development/AI/claude-demo/super-board"].hasTrustDialogAccepted: true in /Users/kai/.claude.json.
+I haven't built anything for issue #1. I can't read the ticket, because every command that reaches GitHub is waiting on permission I don't have.
+
+- **Blocked:** `gh issue view 1` and `.claude/bin/super-board-github-read.py` both returned "requires approval". Without the issue body and its acceptance criteria I can't build or claim it.
+- **Not blocked:** local git commands run, and the repo has no extra worktrees.
+- **Changes made:** none. I haven't claimed the issue, created a worktree or branch, or moved the card.
+- **Workarounds:** I'm not going around the block, for example with other `gh` calls, a different tool, or guessing the ticket content.
+
+The repo also has uncommitted changes. `.claude/super-board/configs/super-board-demo.json` is modified and `docs/super-board/runs/` is untracked. The run precondition asks for a clean tree on `main`. That check belongs to the orchestrator, but it may flag this.
+
+To continue, approve the `gh` and `.claude/bin/super-board-*` commands for this session, or add them to the allowlist. Then I'll read issue #1, run the pre-flight, and build in `.claude/worktrees/issue-1-build/`. If you'd rather I use a different way to read the ticket, tell me which.
+=== dispatch lane=build issue=#1 at 2026-10-20T22:54:11Z ===
+prompt: Run super-build on issue #1 for super-board run. Read .claude/skills/super-board/references/run.md → Builder lifecycle. Config: .claude/super-board/configs/super-board-demo.json.
+
+Warning: MCP server blocked by enterprise policy: cmux-cua
+Ignoring 69 permissions.allow entries from .claude/settings.json: this workspace has not been trusted. Run Claude Code interactively here once and accept the trust dialog, or set projects["/Users/kai/Development/AI/claude-demo/super-board"].hasTrustDialogAccepted: true in /Users/kai/.claude.json.
