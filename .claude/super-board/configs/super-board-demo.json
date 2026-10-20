@@ -2,7 +2,7 @@
   "version": 1,
   "description": "super-board demo build pipeline",
   "project": {"owner": "K4iBrX", "title": "Super-board Demo", "number": 1},
-  "worker_backend": "workflow",
+  "worker_backend": "claude-p",
   "model_tier": "medium",
   "codex": {"model": null},
   "target": {"type": "repo", "url": null},
