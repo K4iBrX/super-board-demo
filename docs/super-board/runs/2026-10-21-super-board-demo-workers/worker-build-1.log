@@ -18,3 +18,29 @@ prompt: Run super-build on issue #1 for super-board run. Read .claude/skills/sup
 
 Warning: MCP server blocked by enterprise policy: cmux-cua
 Ignoring 69 permissions.allow entries from .claude/settings.json: this workspace has not been trusted. Run Claude Code interactively here once and accept the trust dialog, or set projects["/Users/kai/Development/AI/claude-demo/super-board"].hasTrustDialogAccepted: true in /Users/kai/.claude.json.
+=== dispatch lane=build issue=#1 at 2026-10-20T22:59:44Z ===
+prompt: Run super-build on issue #1 for super-board run. Read .claude/skills/super-board/references/run.md → Builder lifecycle. Config: .claude/super-board/configs/super-board-demo.json.
+
+Warning: MCP server blocked by enterprise policy: cmux-cua
+I couldn't write any code for issue #1, so nothing is built yet. The permission prompt for writing files in the worktree wasn't granted, so I stopped there.
+
+**Done**
+- Read issue #1 and the config. The issue has four acceptance criteria and no blockers.
+- Created the worktree `.claude/worktrees/issue-1-build` on branch `issue-1-streamlit-scaffold-sign-in-gate`, off `main` at `d0692cc`.
+- Moved the card Ready → Building. That move did succeed.
+
+**Not done**
+- No files written. Both Write calls (`tests/test_auth.py` and `tests/test_app.py` in the worktree) were denied.
+- A few Bash calls were also stopped for approval: `git -C …`, `git ls-files | head`, and the rate-limit guard script. I did not try to write the files through Bash to get around the Write denial.
+- Never ran the GraphQL rate-limit guard.
+- Never ran the pre-flight duplicate check. The repo has no app code yet, so I expect nothing to collide.
+- No commit, no PR, no issue comment.
+- I did not release the assignee. The issue is already assigned to K4iBrX. I didn't set it, and I'm not sure who did, so I left it alone.
+
+**Card state:** #1 sits in Building with an empty worktree and branch. If you stop here, the wave-start sweep will treat it as stranded and move it back to Ready. Nothing needs cleaning up by hand.
+
+**What I need from you:** allow writes under `.claude/worktrees/issue-1-build/`, or tell me to write them another way. I can then continue with the plan:
+1. Tests first: `tests/test_auth.py` and `tests/test_app.py`, using Streamlit `AppTest`.
+2. Then `auth.py`, `app.py`, `requirements.txt` and the pytest config.
+3. Then run `pip install -r requirements.txt && pytest` in a venv inside the worktree.
+4. Then commit, push, open the draft PR, post the `[builder] [report]` comments, and move the card to QA.
