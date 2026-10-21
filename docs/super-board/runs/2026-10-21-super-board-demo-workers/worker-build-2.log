@@ -1,0 +1,95 @@
+=== dispatch lane=build issue=#2 at 2026-10-20T23:57:47Z ===
+prompt: Run super-build on issue #2 for super-board run. Read .claude/skills/super-board/references/run.md → Builder lifecycle. Config: .claude/super-board/configs/super-board-demo.json.
+
+Warning: MCP server blocked by enterprise policy: cmux-cua
+=== dispatch lane=build issue=#2 at 2026-10-21T00:10:04Z ===
+prompt: Run super-build on issue #2 for super-board run. Read .claude/skills/super-board/references/run.md → Builder lifecycle. Config: .claude/super-board/configs/super-board-demo.json.
+
+Warning: MCP server blocked by enterprise policy: cmux-cua
+I've paused issue #2 because I can't read the bcrypt docs or run Python, and both are needed for a credentials ticket. No code is written yet.
+
+**State now**
+- Card #2 is in **Building**.
+- The worktree is `.claude/worktrees/issue-2-build`, on branch `issue-2-login-username-password` off `origin/main` (`a4a7c17`).
+- Nothing is committed or pushed, and there is no PR.
+- #1 is closed, so the scaffold and `auth` helpers (`auth.sign_in`, `User`, `current_user`) are on main. Blocker cleared.
+
+**What was declined**
+- WebFetch of the PyPI bcrypt page. The builder contract requires current docs before bcrypt or auth code, and the PR's `Docs:` bullet needs a source.
+- Running `.venv/bin/python -m pip list`, and `python3 -c "import bcrypt, streamlit"`. I need Python to check which versions are installed. The test-first loop (`pytest`) needs it too.
+
+**What I need from you**
+1. Allow WebFetch for `pypi.org` and the bcrypt docs. Otherwise tell me to mark the code `unverified against current docs` and keep the change minimal.
+2. Allow `.venv/bin/python` and `pytest` commands in the worktree.
+
+**Plan once unblocked**
+- Add `bcrypt` to `requirements.txt`.
+- Add a `users.py` module for the SQLite store and bcrypt hashing.
+- Add login throttling (5 failures per username in 10 minutes).
+- Add `scripts/create_user.py`.
+- Add a sign-in form in `app.py` that calls `auth.sign_in`.
+- Add `users.db` to `.gitignore`.
+- Write tests for each acceptance criterion first.
+- Keep it under the 400-line cap and open a draft PR.
+- The `auth` label means the merge gate will route the merge to you.
+
+If you'd rather I release the card back to Ready and remove the worktree instead, say so.
+=== dispatch lane=build issue=#2 at 2026-10-21T00:27:08Z ===
+prompt: Run super-build on issue #2 for super-board run. Read .claude/skills/super-board/references/run.md → Builder lifecycle. Config: .claude/super-board/configs/super-board-demo.json.
+
+Warning: MCP server blocked by enterprise policy: cmux-cua
+I stopped before writing any code on #2: I can't install the dependencies it needs, because `pip install` was refused (it needs approval).
+
+**What exists now**
+- **Claim and card:** I assigned #2 to K4iBrX and moved the card Ready → Building.
+- **Branch:** `issue-2-login-username-password` already existed locally with no commits beyond `main`, so I reused it. There is no remote branch and no PR.
+- **Worktree:** `.claude/worktrees/issue-2-build` is created.
+- **Venv:** `/tmp/sb-venv2` is created and empty.
+- **Code:** No files are changed.
+- **Comments:** I posted no `[builder]` comment on the issue.
+
+**Why I stopped**
+- **Missing packages:** The system Python has none of `pytest`, `streamlit` or `bcrypt`, and the repo's `.venv` is absent.
+- **bcrypt not in requirements:** The AC needs `bcrypt`, but `requirements.txt` only lists `streamlit` and `pytest`. I'd add it.
+- **TDD blocked:** The tests use Streamlit's `AppTest`, so I can't run anything red-first without installing them.
+
+**What I need from you**
+- Approve `/tmp/sb-venv2/bin/pip install streamlit pytest bcrypt` so I can continue. I'd run it outside the repo and add `bcrypt>=4` to `requirements.txt`. Or point me at an existing environment that has them.
+- Or tell me to park the card back in Ready and release the claim.
+
+**For the merge:** #2 is labelled `auth`, so the merge gate will send the PR to a human. If it ends up over 400 changed lines, it would also be blocked as "too big".
+=== dispatch lane=build issue=#2 at 2026-10-21T00:45:07Z ===
+prompt: Run super-build on issue #2 for super-board run. Read .claude/skills/super-board/references/run.md → Builder lifecycle. Config: .claude/super-board/configs/super-board-demo.json.
+
+Warning: MCP server blocked by enterprise policy: cmux-cua
+Permission allow rule (.claude/settings.json): Bash(/tmp/sb-venv*/bin/pip install:*) mixes * with the trailing :* prefix syntax, so it is matched as a literal prefix (the * is not expanded) and will likely never match. Replace that * with the exact value you mean.
+Permission allow rule (.claude/settings.json): Bash(/tmp/sb-venv*/bin/python:*) mixes * with the trailing :* prefix syntax, so it is matched as a literal prefix (the * is not expanded) and will likely never match. Replace that * with the exact value you mean.
+Permission allow rule (.claude/settings.json): Bash(/tmp/sb-venv*/bin/pytest:*) mixes * with the trailing :* prefix syntax, so it is matched as a literal prefix (the * is not expanded) and will likely never match. Replace that * with the exact value you mean.
+I couldn't build #2: the harness denied writes inside the build worktree, so no code is written. Nothing has been committed or pushed, and no PR exists.
+
+**What I did**
+- Confirmed the blocker, #1, is merged (PR #4). The feature is `feature`-labelled, and #2 also carries `auth`, so its merge goes to a human.
+- Reused the local branch `issue-2-login-username-password`. It had no commits beyond `main`.
+- Created the worktree `.claude/worktrees/issue-2-build` and moved the card Ready → Building.
+
+**Where it stopped**
+- Writing `tests/test_accounts.py` into the worktree was denied.
+- The `.gitignore` and `requirements.txt` edits were denied too.
+- `pytest` and the venv python also need approval. I couldn't check that `bcrypt` is installed, and the tests are still unrun.
+- Per run.md, the orchestrator may not patch config or permissions, so I stopped instead of working around it.
+
+**State now**
+- The card is still in **Building**. The worktree is clean and the claim is unchanged: the assignee is K4iBrX, which was already set.
+- Next wave, `stranded` will move the card back to Ready and keep the branch.
+
+**Plan once writes are allowed**
+1. **Tests first:** `tests/test_accounts.py` covers the correct login, the same invalid message for a wrong password or unknown user, bcrypt storage, and the lockout.
+2. **Lockout rule:** 5 failures within 10 minutes locks that username. It also applies to unknown usernames, so the lockout doesn't reveal which accounts exist.
+3. **`accounts.py`:** SQLite `users.db` with bcrypt hashes and a failed-attempts table.
+4. **`app.py` form:** a sign-in form that calls `auth.sign_in`, showing "Invalid username or password" or "Too many attempts, try again later".
+5. **`scripts/create_user.py`:** prompts for the password.
+6. **Housekeeping:** add `users.db` to `.gitignore` and `bcrypt>=4` to `requirements.txt`.
+
+Total change is well under the 400-line cap.
+
+**Decision for you:** allow Write and Bash in `.claude/worktrees/issue-2-build/**` (or the worker's permission mode) and tell me to continue. I'll resume on the existing worktree.

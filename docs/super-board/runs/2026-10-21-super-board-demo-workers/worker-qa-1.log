@@ -1,0 +1,4 @@
+=== dispatch lane=qa issue=#1 at 2026-10-20T23:49:50Z ===
+prompt: Run super-qa on issue #1 for super-board run. Read .claude/skills/super-board/references/run.md → Tester lifecycle. Config: .claude/super-board/configs/super-board-demo.json.
+
+Warning: MCP server blocked by enterprise policy: cmux-cua
